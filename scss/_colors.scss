@@ -1,0 +1,29 @@
+// MESSAGES
+%message {
+	border: 2px solid transparent; padding: $pad1 $pad2; margin-bottom: $pad2; font-weight: $font-medium;
+	&:last-child {margin-bottom:0;}
+}
+@each $name, $color in $message-colors {
+	.message-#{$name} {
+		$border: rgba($color, (0.9 - $contrast));
+		$bg: rgba($color, $contrast);
+		@extend %message;
+		background-color: $bg; border-color: $border;
+		a {color: contrast($bg); }
+	}
+}
+[class*="message-"] p:last-child {margin-bottom:0;}
+
+// BACKGROUND
+.bg-none {background:none; color:inherit;}
+@each $name, $color in $system-colors {
+	.bg-#{$name} { 
+		background-color: $color; color: contrast($color); 
+		a {color: contrast($color); }
+	}
+
+	// TEXT COLORS
+	.text-#{$name} { color: $color !important; }
+	a.text-#{$name} {color: $color;}
+}
+

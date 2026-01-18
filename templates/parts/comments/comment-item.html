@@ -1,0 +1,9 @@
+{{define "comment-item"}}
+<div class="comment-item">
+	<div class="comment-header">
+		<span class="comment-author">{{.Username}}</span>
+		<span class="comment-time">{{.Comment.CreatedAt.Format "Jan 2, 3:04pm"}}</span>
+	</div>
+	<div class="comment-content">{{.Comment.Content}}</div>
+</div>
+{{end}}

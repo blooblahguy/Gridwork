@@ -1,0 +1,359 @@
+@import "_functions.scss";
+@import "_variables.scss";
+@import "_reset.scss";
+@import "_colors.scss";
+@import "_buttons.scss";
+@import "_typography.scss";
+@import "_helpers.scss";
+@import "_forms.scss";
+@import "_ui.scss";
+@import "_grid.scss";
+@import "_icons.scss";
+
+#task-sidebar {
+	height: 100%;
+	display: none;
+	&.active {
+		display: block;
+	}
+}
+
+// TASKS
+.task-card {
+	cursor: pointer;
+	border-bottom: 1px solid $grey;
+	&:last-child {
+		border-bottom: none;
+	}
+	&:hover {
+		background: $grey;
+	}
+	&.active {background: $info; color: $white; }
+	
+	.task-title {
+		max-width: 90% !important;
+	}
+	.task-checkbox {
+		padding: 0;
+		display: flex;
+		align-items: center;
+		
+		input[type="checkbox"] {
+			cursor: pointer;
+			width: 18px;
+			height: 18px;
+			margin: 0;
+		}
+	}
+	
+	.task-content {
+		cursor: pointer;
+		flex: 1;
+	}
+}
+
+// ARCHIVE TASKS
+#archive-tasks {
+	.task-card {
+		opacity: 0.5;
+		&:hover {
+			opacity: 1;
+		}
+	}
+}
+
+.matrix-quadrant {
+	.content {
+		height: 300px;
+	}
+
+	&.do-quadrant .matrix-header {
+		background: $success;
+		color: $white;
+	}
+
+	&.decide-quadrant .matrix-header {
+		background: $info;
+		color: $white;
+	}
+
+	&.delegate-quadrant .matrix-header {
+		background: $warning;
+		color: $white;
+	}
+
+	&.delete-quadrant .matrix-header {
+		background: $error;
+		color: $white;
+	}
+}
+
+.task-ghost {
+	opacity: 0.4;
+	position: relative;
+	cursor: grabbing !important;
+	&:after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border: 2px dashed #0056b3;
+	}
+}
+
+
+
+// // matrix quadrant specific styling
+// .do-quadrant .task-card {
+// 	border-left: 3px solid #28a745;
+// }
+
+// .decide-quadrant .task-card {
+// 	border-left: 3px solid #007bff;
+// }
+
+// .delegate-quadrant .task-card {
+// 	border-left: 3px solid #ffc107;
+// }
+
+// .delete-quadrant .task-card {
+// 	border-left: 3px solid #dc3545;
+// }
+
+// .archive-section .task-card {
+// 	opacity: 0.7;
+// 	border-left: 3px solid #6c757d;
+
+// 	&:hover {
+// 		opacity: 1;
+// 	}
+// }
+
+// // empty state
+// .task-list:empty:after {
+// 	content: "drag tasks here";
+// 	display: flex;
+// 	align-items: center;
+// 	justify-content: center;
+// 	height: 100%;
+// 	min-height: 180px;
+// 	text-align: center;
+// 	// color: #ccc;
+// 	font-size: 13px;
+// 	font-style: italic;
+// }
+
+// // sidebar
+// .sidebar {
+// 	position: fixed;
+// 	top: 0;
+// 	right: -500px;
+// 	width: 500px;
+// 	height: 100vh;
+// 	background: white;
+// 	box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+// 	transition: right 0.3s;
+// 	z-index: 1000;
+
+// 	&.active {
+// 		right: 0;
+
+// 		.sidebar-overlay {
+// 			display: block;
+// 		}
+// 	}
+
+// 	.sidebar-overlay {
+// 		display: none;
+// 		position: fixed;
+// 		top: 0;
+// 		left: 0;
+// 		width: 100%;
+// 		height: 100%;
+// 		background: rgba(0,0,0,0.3);
+// 		z-index: -1;
+// 	}
+
+// 	.sidebar-content {
+// 		height: 100%;
+// 		overflow-y: auto;
+// 	}
+// }
+
+// .task-detail {
+// 	padding: 24px;
+
+// 	.task-detail-header {
+// 		display: flex;
+// 		justify-content: space-between;
+// 		align-items: center;
+// 		margin-bottom: 24px;
+
+// 		h2 {
+// 			font-size: 18px;
+// 			font-weight: 600;
+// 		}
+
+// 		.close-btn {
+// 			background: none;
+// 			border: none;
+// 			font-size: 32px;
+// 			cursor: pointer;
+// 			// color: #666;
+// 			padding: 0;
+// 			width: 32px;
+// 			height: 32px;
+// 			line-height: 1;
+
+// 			&:hover {
+// 				// color: #000;
+// 			}
+// 		}
+// 	}
+
+// 	.form-group {
+// 		margin-bottom: 20px;
+
+// 		label {
+// 			display: block;
+// 			margin-bottom: 8px;
+// 			font-weight: 500;
+// 		}
+
+// 		input, textarea {
+// 			width: 100%;
+// 			padding: 10px;
+// 			border: 1px solid #ddd;
+// 			border-radius: 4px;
+// 			font-size: 14px;
+// 			font-family: inherit;
+
+// 			&:focus {
+// 				outline: none;
+// 				border-color: #007bff;
+// 			}
+// 		}
+
+// 		textarea {
+// 			resize: vertical;
+// 		}
+// 	}
+
+// 	button[type="submit"] {
+// 		width: 100%;
+// 		padding: 12px;
+// 		background: #007bff;
+// 		// color: white;
+// 		border: none;
+// 		border-radius: 4px;
+// 		font-size: 14px;
+// 		font-weight: 500;
+// 		cursor: pointer;
+
+// 		&:hover {
+// 			background: #0056b3;
+// 		}
+// 	}
+
+// 	.comments-section {
+// 		margin-top: 32px;
+// 		padding-top: 20px;
+// 		border-top: 1px solid #e9ecef;
+
+// 		h3 {
+// 			font-size: 16px;
+// 			font-weight: 600;
+// 			margin-bottom: 16px;
+// 		}
+
+// 		.comments-list {
+// 			margin-bottom: 16px;
+// 			max-height: 300px;
+// 			overflow-y: auto;
+// 		}
+
+// 		.comment-item {
+// 			background: #f8f9fa;
+// 			padding: 12px;
+// 			border-radius: 4px;
+// 			margin-bottom: 8px;
+
+// 			.comment-header {
+// 				display: flex;
+// 				justify-content: space-between;
+// 				margin-bottom: 8px;
+// 				font-size: 12px;
+
+// 				.comment-author {
+// 					font-weight: 600;
+// 					color: #007bff;
+// 				}
+
+// 				.comment-time {
+// 					// color: #666;
+// 				}
+// 			}
+
+// 			.comment-content {
+// 				font-size: 14px;
+// 				line-height: 1.4;
+// 				white-space: pre-wrap;
+// 			}
+// 		}
+
+// 		.no-comments {
+// 			// color: #999;
+// 			font-size: 13px;
+// 			font-style: italic;
+// 			text-align: center;
+// 			padding: 20px;
+// 		}
+
+// 		form {
+// 			margin-top: 16px;
+
+// 			textarea {
+// 				resize: vertical;
+// 				min-height: 60px;
+// 			}
+
+// 			button {
+// 				width: 100%;
+// 				padding: 10px;
+// 				background: #6c757d;
+// 				// color: white;
+// 				border: none;
+// 				border-radius: 4px;
+// 				font-size: 14px;
+// 				cursor: pointer;
+
+// 				&:hover {
+// 					background: #5a6268;
+// 				}
+// 			}
+// 		}
+// 	}
+
+// 	.task-actions {
+// 		margin-top: 32px;
+// 		padding-top: 20px;
+// 		border-top: 1px solid #e9ecef;
+
+// 		.delete-btn {
+// 			width: 100%;
+// 			padding: 12px;
+// 			background: #dc3545;
+// 			// color: white;
+// 			border: none;
+// 			border-radius: 4px;
+// 			font-size: 14px;
+// 			cursor: pointer;
+
+// 			&:hover {
+// 				background: #c82333;
+// 			}
+// 		}
+// 	}
+// }

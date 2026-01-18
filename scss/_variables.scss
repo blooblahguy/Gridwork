@@ -1,0 +1,127 @@
+//============================================
+// Defaults - Common
+//============================================
+	$font-size: 15px; 					// Font size
+	$line-height: 1.8;					// Body line height
+	$border-radius: 3px;
+
+	$padding: 0.75rem; 					// Padding starting value
+	$padding-multipler: 1.2; 			// Grow padding by multipler
+
+	$viewport-md: 768px;				// Responsiveness breakpoint medium
+	$viewport-lg: 1024px;				// Responsiveness breakpoint large
+	$custom_grids: (); 					// Custom Grids  -  ie: $custom_grids: ("sv": 7) creates os-sv7 - .os-sv-7 (sevenths)
+
+//============================================
+// Defaults - Uncommon
+//============================================
+	$animation-speed: 0.15s; 			// animations
+	$hover-difference: 6%; 				// hover effects
+	$contrast: 0.20; 					// builds color differences
+	$anchor-offset: 46px; 				// for id hrefs 
+
+	// Typeography
+	$h-line-height: 1.5;
+	$h1: 1.4rem;
+	$h2: 1.3rem;
+	$h3: 1.2rem;
+	$h4: 1.1rem;
+	$h5: 1.0rem;
+	$h6: 0.8rem;
+
+	$font-medium: 500;
+	$font-bold: 600;
+
+//============================================
+// Theme
+//============================================
+	$theme: "default" !default; // default, dark
+
+	$primary: #2b80b9;
+	$secondary: #3b914e;
+
+	$error: #e74c3c;
+	$warning: #f39c12;
+	$info: #3493d3;
+	$success: #22ac73;
+
+	$black: #252830;
+	$white: #fafafa;
+
+	$grey: rgba(mix($white, $black, 50%), 0.3);
+
+	$background: $white;
+	$text: $black;
+	$dark: lighten($black, $hover-difference);
+	$light-grey: rgba($black, 0.05);
+	$dark-grey: rgba($black, 0.1);
+
+	@if $theme == "dark" {
+		$background: $black;
+		$text: $white;
+		$dark: darken($black, $hover-difference);
+		$light-grey: rgba($white, 0.05);
+		$dark-grey: rgba($white, 0.05);
+	}
+
+//============================================
+// Calculated
+//============================================
+	
+	$input-background: hover($background, $hover-difference);
+	$input-border: rgba(contrast($background, $white, $black), $contrast);
+
+	$system-colors: (
+		background: $background,
+		black: $black,
+		dark: $dark,
+
+		primary: $primary,
+		secondary: $secondary,
+
+		success: $success,
+		info: $info,
+		warning: $warning,
+		error: $error,
+
+		light-grey: $light-grey,
+		grey: $grey,
+		dark-grey: $dark-grey
+	);
+
+	// Button colors/classes
+	$button-colors: (
+		primary: $primary
+		, secondary: $secondary
+
+		, success: $success
+		, info: $info
+		, warning: $warning
+		, error: $error
+	);
+
+	// Message colors/classes
+	$message-colors: (
+		success: $success
+		, info: $info
+		, warning: $warning
+		, error: $error
+	);
+
+
+//============================================
+// ADVANCED
+//============================================
+	$pad0: $padding * 0; 							// padding size 0
+	$pad1: $padding * 1; 							// padding size 1
+	$pad2: $padding * 2 * $padding-multipler; 		// padding size 3
+	$pad3: $padding * 3 * $padding-multipler; 		// padding size 4
+	$pad4: $padding * 4 * $padding-multipler; 		// padding size 5
+
+	$sizings: (
+		0: 0,
+		1: $pad1,
+		2: $pad2, 
+		3: $pad3, 
+		4: $pad4
+	);

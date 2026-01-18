@@ -1,0 +1,8 @@
+{{define "task-input"}}
+<div class="task-input">
+	<form hx-post="/tasks" hx-target="#{{.Position}}-tasks" hx-swap="beforeend" hx-on::after-request="this.reset()">
+		<input type="text" name="title" placeholder="add a task..." required>
+		<input type="hidden" name="position" value="{{.Position}}">
+	</form>
+</div>
+{{end}}

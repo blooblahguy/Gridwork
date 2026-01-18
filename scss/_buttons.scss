@@ -1,0 +1,38 @@
+// Buttons
+%btn-base {
+	$el_bg: mix($text, $background, 20%);
+	$el_hover: hover($el_bg, $hover-difference);
+
+	font-family: inherit; border: 1px solid transparent; background: $el_bg; text-decoration:none; padding: $pad1 $pad2; cursor:pointer; text-align:center; box-shadow:none; display: inline-block; color: contrast($el_bg); line-height: $pad1; border-radius: $border-radius;
+	&:hover, &:focus {
+		text-decoration:none; color: contrast($el_hover); background: $el_hover; border-color: $el_hover;
+	}
+
+	&#{-btn-lg}, &.btn-lg { padding: $pad2 $pad4; }
+	&#{-btn-sm}, &.btn-sm { padding: $pad1 / 2 $pad1; font-size: 0.8rem; }
+}
+
+.btn, a.btn, button, input[type="submit"], input[type="button"] {
+	@extend %btn-base;
+}
+
+@each $name, $color in $button-colors {
+	.btn-#{$name}, input.btn-#{$name}, a.btn-#{$name}, button.btn-#{$name} {
+		@extend %btn-base;
+		$bg: $color;
+
+		color: contrast($bg); background: $bg; border-color: $bg;
+		&:hover, &:focus {
+			$bg: hover($bg);
+			color: contrast($bg); background-color: $bg; border-color: $bg;
+		}
+	}
+}
+
+.btn-blank {
+	@extend %btn-base; 
+	background: none; border:none; color: inherit;
+	&.btn-blank:hover, &.btn-blank:focus {
+		background: $light-grey; color: contrast($light-grey);
+	}
+}

@@ -1,0 +1,51 @@
+@function rgba-rgb($rgba, $background: $white) {
+	@return mix(rgb(red($rgba), green($rgba), blue($rgba)), $background, alpha($rgba) * 100%);
+}
+
+@function luma($c) {
+	$-local-red: red(rgba($c, 1.0));
+	$-local-green: green(rgba($c, 1.0));
+	$-local-blue: blue(rgba($c, 1.0));
+	@return (0.2126 * $-local-red +
+	0.7152 * $-local-green +
+	0.0422 * $-local-blue) / 255;
+}
+
+// Calculates most readable color between the 2nd and 3rd paramter in relation to the 1st
+@function contrast($bg, $light: $black, $black: $white) {
+	$bg: rgba-rgb($bg);
+	$bg-luma: luma($bg);
+	$c1-luma: luma($light);
+	$c2-luma: luma($black);
+	$c1-diff: abs($bg-luma - $c1-luma);
+	$c2-diff: abs($bg-luma - $c2-luma);
+	@if $c1-diff > $c2-diff {
+		@return $light;
+	} @else {
+		@return $black;
+	}
+}
+
+// Hover calculation (darker colors get lightened, lighter colors get darkened
+@function hover($color, $hover-difference: $hover-difference) {
+	@if (lightness($color) > 65) {
+		@return darken($color, $hover-difference);
+	} @else {
+		@return lighten($color, $hover-difference);
+	}
+}
+// Hover calculation (darker colors get lightened, lighter colors get darkened
+@function hover-inverse($color) {
+	@if (lightness($color) < 65) {
+		@return darken($color, $hover-difference);
+	} @else {
+		@return lighten($color, $hover-difference);
+	}
+}
+
+// auto browser prefixing EX: @include prefix(box-shadow, 0 3px 3px rgba(0,0,0,0.05)); 
+@mixin prefix($prop, $values...) {
+	@each $prefix in '-webkit-', '-moz-', '-ms-', '-o-', '' {
+		#{$prefix}#{$prop}: $values;
+	}
+}

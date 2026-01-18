@@ -1,0 +1,291 @@
+{{template "base.html" .}} {{define "title"}}TaskBox{{end}} {{define "content"}}
+<div class="app-container">
+	<header class="app-header row pad2 bg-black">
+		<div class="os">
+			<h1 class="margb0">Gridwork</h1>
+		</div>
+		<div class="user-info os-min">
+			<strong class="margr2">{{.User.Username}}</strong>
+			<a href="/logout">logout</a>
+		</div>
+	</header>
+
+	<div class="main padx2">
+		<div class="row g2">
+			<!-- sidebar for task details -->
+			<div id="task-sidebar" class="sidebar h100 os-2">
+				<div class="sidebar-overlay" hx-on:click="closeTask()"></div>
+				<div id="task-sidebar-content" class="sidebar-content h100">
+					<!-- task detail will be loaded here -->
+				</div>
+			</div>
+
+			<main class="app-main os">
+				<!-- eisenhower matrix -->
+				<section class="matrix-section">
+					<div class="matrix-grid row g1">
+						{{template "quadrant" (dict "Position" "do" "Tasks" (index
+						.TasksByPosition "do"))}} {{template "quadrant" (dict "Position"
+						"decide" "Tasks" (index .TasksByPosition "decide"))}} {{template
+						"quadrant" (dict "Position" "delegate" "Tasks" (index
+						.TasksByPosition "delegate"))}} {{template "quadrant" (dict
+						"Position" "delete" "Tasks" (index .TasksByPosition "delete"))}}
+					</div>
+				</section>
+
+				<hr />
+
+				<!-- archive section -->
+				<section class="archive-section">
+					<div class="section-header row g1 content-between">
+						<h2 class="marg0 os">Done</h2>
+						<span class="task-count os-min"
+							>{{len (index .TasksByPosition "archive")}}</span
+						>
+					</div>
+					<div class="">
+						{{template "task-list" (dict "Position" "archive" "Tasks" (index
+						.TasksByPosition "archive"))}}
+					</div>
+				</section>
+			</main>
+
+			<div class="os-3">
+				<!-- inbox section -->
+				<section class="inbox-section">
+					<div class="section-header row content-between row g1">
+						<h2 class="marg0 os">Inbox</h2>
+						<span class="task-count os-min"
+							>{{len (index .TasksByPosition "inbox")}}</span
+						>
+					</div>
+					{{template "task-input" (dict "Position" "inbox")}} {{template
+					"task-list" (dict "Position" "inbox" "Tasks" (index .TasksByPosition
+					"inbox"))}}
+				</section>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	// toggle task completion
+	function toggleTaskComplete(taskId, isChecked, event) {
+		event.stopPropagation();
+
+		const newPosition = isChecked ? "archive" : "inbox";
+		const taskCard = document.querySelector(`[data-task-id="${taskId}"]`);
+		const currentContainer = taskCard.closest(".task-list");
+
+		// update on server
+		fetch("/tasks/" + taskId, {
+			method: "PATCH",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+			},
+			body: "position=" + encodeURIComponent(newPosition) + "&matrix_order=0",
+		}).then(() => {
+			// find target container
+			const targetContainer = document.querySelector(
+				`[data-position="${newPosition}"]`
+			);
+
+			if (targetContainer && currentContainer !== targetContainer) {
+				// move card to new position
+				taskCard.dataset.position = newPosition;
+				taskCard.classList.remove(taskCard.dataset.position);
+				taskCard.classList.add(newPosition);
+				targetContainer.prepend(taskCard);
+
+				// update counters
+				updateTaskCounter(currentContainer);
+				updateTaskCounter(targetContainer);
+			}
+		});
+	}
+
+	// url state management
+	function openTask(taskId) {
+		document.getElementById("task-sidebar").classList.add("active");
+
+		// remove active class from all tasks
+		document.querySelectorAll(".task-card").forEach((card) => {
+			card.classList.remove("active");
+		});
+
+		// add active class to clicked task
+		const taskCard = document.querySelector(`[data-task-id="${taskId}"]`);
+		if (taskCard) {
+			taskCard.classList.add("active");
+		}
+
+		const url = new URL(window.location);
+		url.searchParams.set("task", taskId);
+		history.pushState({ taskId: taskId }, "", url);
+	}
+
+	function closeTask() {
+		document.getElementById("task-sidebar").classList.remove("active");
+
+		// remove active class from all tasks
+		document.querySelectorAll(".task-card").forEach((card) => {
+			card.classList.remove("active");
+		});
+
+		const url = new URL(window.location);
+		url.searchParams.delete("task");
+		history.pushState({}, "", url);
+	}
+
+	// handle browser back/forward
+	window.addEventListener("popstate", function (event) {
+		const params = new URLSearchParams(window.location.search);
+		const taskId = params.get("task");
+
+		if (taskId) {
+			htmx
+				.ajax("GET", "/tasks/" + taskId, {
+					target: "#task-sidebar-content",
+					swap: "innerHTML",
+				})
+				.then(() => {
+					document.getElementById("task-sidebar").classList.add("active");
+
+					// remove active class from all tasks
+					document.querySelectorAll(".task-card").forEach((card) => {
+						card.classList.remove("active");
+					});
+
+					// add active class to task
+					const taskCard = document.querySelector(`[data-task-id="${taskId}"]`);
+					if (taskCard) {
+						taskCard.classList.add("active");
+					}
+				});
+		} else {
+			document.getElementById("task-sidebar").classList.remove("active");
+
+			// remove active class from all tasks
+			document.querySelectorAll(".task-card").forEach((card) => {
+				card.classList.remove("active");
+			});
+		}
+	});
+
+	// restore state on page load
+	document.addEventListener("DOMContentLoaded", function () {
+		const params = new URLSearchParams(window.location.search);
+		const taskId = params.get("task");
+
+		if (taskId) {
+			htmx
+				.ajax("GET", "/tasks/" + taskId, {
+					target: "#task-sidebar-content",
+					swap: "innerHTML",
+				})
+				.then(() => {
+					document.getElementById("task-sidebar").classList.add("active");
+
+					// add active class to task
+					const taskCard = document.querySelector(`[data-task-id="${taskId}"]`);
+					if (taskCard) {
+						taskCard.classList.add("active");
+					}
+				});
+		}
+
+		initializeSortable();
+	});
+
+	// initialize sortable for drag and drop
+	function initializeSortable() {
+		const taskLists = document.querySelectorAll(".task-list");
+		taskLists.forEach((list) => {
+			new Sortable(list, {
+				group: "tasks",
+				animation: 150,
+				ghostClass: "task-ghost",
+				dragClass: "task-dragging",
+				chosenClass: "task-chosen",
+				forceFallback: false,
+				fallbackOnBody: true,
+				swapThreshold: 0.65,
+				emptyInsertThreshold: 20,
+				onStart: function (evt) {
+					document.querySelectorAll(".task-list").forEach((list) => {
+						if (list !== evt.from) {
+							list.classList.add("drag-over");
+						}
+					});
+				},
+				onEnd: function (evt) {
+					document.querySelectorAll(".task-list").forEach((list) => {
+						list.classList.remove("drag-over");
+					});
+
+					const taskId = evt.item.dataset.taskId;
+					const newPosition = evt.to.dataset.position;
+					const newOrder = evt.newIndex;
+
+					fetch("/tasks/" + taskId, {
+						method: "PATCH",
+						headers: {
+							"Content-Type": "application/x-www-form-urlencoded",
+						},
+						body:
+							"position=" +
+							encodeURIComponent(newPosition) +
+							"&matrix_order=" +
+							encodeURIComponent(newOrder),
+					}).then(() => {
+						evt.item.dataset.position = newPosition;
+
+						// update checkbox state based on position
+						const checkbox = evt.item.querySelector('input[type="checkbox"]');
+						if (checkbox) {
+							checkbox.checked = newPosition === "archive";
+						}
+
+						reorderTasks(evt.to);
+
+						// update counters for source and destination
+						updateTaskCounter(evt.from);
+						updateTaskCounter(evt.to);
+					});
+				},
+			});
+		});
+	}
+
+	// update task counter for a container
+	function updateTaskCounter(container) {
+		const position = container.dataset.position;
+		const count = container.querySelectorAll(".task-card").length;
+
+		// find the counter element for this position
+		const section =
+			container.closest("section") || container.closest(".matrix-quadrant");
+		if (section) {
+			const counter = section.querySelector(".task-count");
+			if (counter) {
+				counter.textContent = count;
+			}
+		}
+	}
+
+	// reorder tasks in a container after drag
+	function reorderTasks(container) {
+		const tasks = container.querySelectorAll(".task-card");
+		tasks.forEach((task, index) => {
+			const taskId = task.dataset.taskId;
+			fetch("/tasks/" + taskId, {
+				method: "PATCH",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+				body: "matrix_order=" + index,
+			});
+		});
+	}
+</script>
+{{end}}

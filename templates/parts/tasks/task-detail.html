@@ -1,0 +1,93 @@
+{{define "task-detail"}}
+<div class="task-detail">
+	<div class="task-detail-header row">
+		<div class="os">
+			<h2>Task Details</h2>
+		</div>
+		<div class="os-min">
+			<button class="close-btn btn-error pad1" hx-on:click="closeTask()">
+				×
+			</button>
+		</div>
+	</div>
+
+	<form
+		hx-patch="/tasks/{{.ID}}"
+		hx-swap="none"
+		hx-on::after-request="this.querySelector('button[type=submit]').textContent='saved!'; setTimeout(() => this.querySelector('button[type=submit]').textContent='save', 1000)">
+		<div class="row g1">
+			<div class="form-sec os-12">
+				<label for="task-title">Title</label>
+				<input
+					type="text"
+					id="task-title"
+					name="title"
+					value="{{.Title}}"
+					required />
+			</div>
+
+			<div class="form-sec os-12">
+				<label for="task-description">Description</label>
+				<textarea id="task-description" name="description" rows="4">
+{{.Description}}</textarea
+				>
+			</div>
+
+			<div class="form-sec os-12">
+				<label for="task-due-date">Due Date</label>
+				<input type="date" id="task-due-date" name="due_date" {{if
+				.DueDate}}value="{{.DueDate.Format "2006-01-02"}}"{{end}}>
+			</div>
+
+			<div class="form-sec os-12">
+				<label for="task-tags">Tags (comma separated)</label>
+				<input
+					type="text"
+					id="task-tags"
+					name="tags"
+					value="{{range $i, $tag := .Tags}}{{if $i}}, {{end}}{{$tag}}{{end}}"
+					placeholder="work, urgent, personal" />
+			</div>
+		</div>
+
+		<button class="btn-primary" type="submit">Save</button>
+	</form>
+
+	<hr />
+
+	<div class="comments-section">
+		<h3>Comments</h3>
+		<div
+			id="comments-list-{{.ID}}"
+			hx-get="/comments/{{.ID}}"
+			hx-trigger="load"
+			hx-swap="innerHTML">
+			<!-- comments loaded here -->
+		</div>
+		<form
+			hx-post="/comments/{{.ID}}"
+			hx-target="#comments-list-{{.ID}}"
+			hx-swap="beforeend"
+			hx-on::after-request="this.reset()">
+			<div class="form-group">
+				<textarea
+					name="content"
+					rows="2"
+					placeholder="add a comment..."
+					required></textarea>
+			</div>
+			<button class="btn-primary" type="submit">Comment</button>
+		</form>
+	</div>
+
+	<div class="task-actions margt4">
+		<button
+			class="delete-btn btn-blank text-error"
+			hx-delete="/tasks/{{.ID}}"
+			hx-confirm="are you sure you want to delete this task?"
+			hx-on::after-request="closeTask(); document.querySelector('[data-task-id=&quot;{{.ID}}&quot;]').remove()">
+			Delete task
+		</button>
+	</div>
+</div>
+{{end}}

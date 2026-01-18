@@ -1,0 +1,23 @@
+---
+description: Generic coding standards for any programming project
+globs: 
+alwaysApply: true
+---
+
+# Communication
+- Be concise. No emojis. Single-line lowercase comments in code.
+- Implement only what's requested. Extend existing systems over creating new ones.
+- Do not create documentation or usage examples unless requested.
+
+# Code Quality
+- Prefer editing existing code over creating new files/abstractions
+- Keep solutions simple and focused on the current task
+- Don't add features, refactor code, or make "improvements" beyond what was asked
+- Don't design for hypothetical future requirements
+- Follow domain driven design
+- Keep files roughly single responsibility
+
+# Error Handling
+- Only validate at system boundaries (user input, external APIs)
+- Trust internal code and framework guarantees
+- Don't add error handling for scenarios that can't happen

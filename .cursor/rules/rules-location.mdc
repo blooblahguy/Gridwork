@@ -1,0 +1,26 @@
+---
+description: How to add or edit Cursor rules
+globs: 
+alwaysApply: false
+---
+
+# Cursor Rules
+
+Place all rules in `.cursor/rules/` with `.mdc` extension and kebab-case names.
+
+## File Structure
+```
+---
+description: Brief purpose
+globs: optional/path/**/*
+alwaysApply: false
+---
+# Title
+
+Concise content. No redundancy with other rules.
+```
+
+## Guidelines
+- `alwaysApply: true` only for rules needed in every prompt
+- Keep rules short to reduce token cost
+- Avoid overlap between rule files

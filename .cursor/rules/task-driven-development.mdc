@@ -1,0 +1,26 @@
+---
+description: Task breakdown for large features (request when needed)
+globs: 
+alwaysApply: false
+---
+
+# Task-Driven Development
+
+For large features, break down before coding:
+
+1. **PRD First**: Clarify requirements, research approaches, define success criteria
+2. **Task Breakdown**: Create TASKS.md with priorities (P0-P3) and dependencies
+3. **Incremental Build**: Start with highest priority/lowest dependency. MVP first.
+4. **Track Progress**: TODO, IN_PROGRESS, BLOCKED, DONE
+
+```markdown
+# TASKS.md Example
+## P0 - Core
+- [ ] Research existing patterns
+- [ ] Design data structure
+- [ ] Implement basic loading
+
+## P1 - Integration
+- [ ] Integrate with existing systems
+- [ ] Test functionality
+```

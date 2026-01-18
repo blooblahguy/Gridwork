@@ -1,0 +1,43 @@
+{{define "task-card"}}
+<div
+	class="task-card {{.Task.Position}} row g1"
+	data-task-id="{{.Task.ID}}"
+	data-position="{{.Task.Position}}">
+	<div class="task-checkbox os-min padl1">
+		<input type="checkbox" {{if eq .Task.Position "archive"}}checked{{end}}
+		onchange="toggleTaskComplete({{.Task.ID}}, this.checked, event)"
+		onclick="event.stopPropagation()" />
+	</div>
+
+	<div
+		class="task-content os"
+		hx-get="/tasks/{{.Task.ID}}"
+		hx-target="#task-sidebar-content"
+		hx-swap="innerHTML"
+		hx-on::after-request="openTask({{.Task.ID}})">
+		<div class="row">
+			<div class="task-title os ellipsis">{{.Task.Title}}</div>
+
+			{{if or .Task.DueDate .Task.Description (gt .CommentCount 0)}}
+			<div class="task-meta os-min">
+				{{if .Task.DueDate}}
+				<span class="meta-item due-date"
+					>📅 {{.Task.DueDate.Format "Jan 2"}}</span
+				>
+				{{end}} {{if .Task.Description}}
+				<span class="meta-item has-description"></span>
+				{{end}} {{if gt .CommentCount 0}}
+				<span class="meta-item has-comments">{{.CommentCount}}</span>
+				{{end}}
+			</div>
+			{{end}} {{if .Task.Tags}}
+			<div class="task-tags os-min">
+				{{range .Task.Tags}}
+				<span class="tag">{{.}}</span>
+				{{end}}
+			</div>
+			{{end}}
+		</div>
+	</div>
+</div>
+{{end}}

@@ -1,0 +1,76 @@
+
+
+
+// INPUTS
+body input, body select, body textarea {
+	display:block; border-radius: 0; padding: $pad1; width: 100%; background: none; border: none; border-bottom: 2px solid $input-background; font-family: inherit; margin:0; line-height: $pad2;
+	&:focus {border-color: $primary; outline: 0; box-shadow: 0 0 0 2px rgba($primary, .25); }
+	&:required {}
+	&:invalid {border-bottom-color: $warning; font-style: italic; }
+	&:invalid:focus, &:invalid:active {border-bottom-color: $error;}
+	&:required:not(:invalid) {border-bottom-color: $success;}
+	&:disabled {opacity: 0.5; cursor: not-allowed; }
+}
+
+textarea {resize: vertical;}
+select[multiple] {height: auto; overflow:auto; padding: 0;}
+input[type="range"] {border: none; -webkit-appearance: slider-horizontal;}
+input[type="date"], input[type="datetime-local"] { padding: calc(#{$pad1} - .1rem) $pad1; }
+input[type="color"] { padding: 2px; display: block;  height: calc(#{$line-height}rem);  }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { height: auto; }
+input[type="submit"] { margin-top: $pad1; }
+
+// Placeholder italicize
+::-webkit-input-placeholder, ::-moz-placeholder, ::-ms-input-placeholder, ::placeholder { font-style:italic; }
+
+// modern checkboxes and radios
+input[type="radio"], input[type="checkbox"] {background: none; border:none;}
+input[type="radio"] {border-radius: 50%;}
+input[type="checkbox"], input[type="radio"] {
+	vertical-align: bottom; display: inline-block; position:relative; margin: 0 $pad1/2 0 $pad1; border-width: 1px; padding: 2px; top: -2px; height: $pad2; border-radius: $pad2;
+
+	// validation
+	&:first-of-type {margin-left:0;}
+	&:invalid {border-width:1px; border-color: $warning;}
+	&:invalid:focus, &:invalid:active {border-color: $error; }
+	&:not(:invalid) { border-color: $input-border; }
+
+	&:after {content: '';  position: absolute; border-radius: 50%; }
+	&:focus { box-shadow: 0 0 6px rgba($black, .25); }
+}
+
+input[type="checkbox"] {
+	border-radius: 0px;
+	background: $white;
+	&:checked {
+		background: $success; border-color: $success;
+		&:after {}
+	}
+}
+
+input[type="checkbox"].toggle {
+	width: $pad4; background: $grey; 
+	&:after { background: $white; top: 0px; left: 0px; height: calc(#{$pad2} - 2px); width: calc(#{$pad2} - 2px); @include prefix(transition, left $animation-speed ease-in-out); }
+	&:checked {
+		background: $success; border-color: $success;
+		&:after {left: $pad2; background: $white;}
+	}
+}
+input[type="radio"] {
+	width: $pad2; 
+	&::after { left: 2px; right: 2px; top: 2px; bottom: 2px;  }
+	&:checked {
+		background: $white; border-color: $success;
+		&:after {top: 2px; right: 2px; bottom: 2px; left: 2px; background: $success; }
+	}
+}
+
+// Selectboxes
+option {font-style: normal; padding: $pad1;}
+option[disabled] {color: $grey; font-style: normal;}
+
+// Label with required asterix
+label {
+	display:block; font-weight: $font-medium;
+	span {color: $error; margin: 0 4px;}
+}

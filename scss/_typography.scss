@@ -1,0 +1,57 @@
+// Text manipulation
+small, .small {font-size: .707rem;}
+.muted {opacity:0.7;}
+
+.text-justify {text-align: justify; text-justify: inter-word;}
+.text-upper {text-transform: uppercase;}
+.text-lower {text-transform: lowercase;}
+.text-cap {text-transform: capitalize;}
+
+.ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+
+// Text defaults
+%mono {font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;}
+.code, pre, samp, .mono {@extend %mono;}
+code, pre, samp {@extend %mono; border:none; clear:both; display:block; padding: $pad1; font-size: 0.808rem; tab-size: $pad3; margin-bottom: -1px;}
+pre > code, pre > code.hljs {margin: -$pad1; border:none; padding: $pad1 $pad2;}
+mark, .mark, .highlight {background: $warning; padding: 0 $pad1/2; }
+kbd, .kbd {@extend %mono; display:inline-block; padding: 2px 5px 1px; position: relative; top: -1px; font-size: .707rem; color: contrast($dark); background: $dark; }
+
+sub, sup {font-size: .707rem; line-height: 0; position: relative; vertical-align: baseline; }
+sup {top: -0.5rem;}
+sub {bottom: -0.25rem;}
+i, em, .em {font-style:italic;}
+b, strong, .strong {font-weight: $font-bold;}
+s, .strike {text-decoration:line-through;}
+u, .underline {text-decoration:underline;}
+
+// LINKS
+a {color: contrast($white, $secondary, $primary); text-decoration: none; }
+a:active, a:hover, *.active > a { outline: 0; color: hover(contrast($white, $secondary, $primary)); }
+
+// HEADERS
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+	margin: $pad2 0 $pad1; line-height: $h-line-height; 
+	&:first-child {margin-top: 0;}
+}
+.h1, h1 {margin-top: 0; font-size: $h1; font-weight: bold; }
+.h2, h2 {font-size: $h2; font-weight: bold; }
+.h3, h3 {font-size: $h3; font-weight: bold; }
+.h4, h4 {font-size: $h4; font-weight: bold; }
+.h5, h5 {font-size: $h5; font-weight: bold; }
+.h6, h6 {font-size: $h6; font-weight: bold; }
+
+// CONTENT
+p {margin: 0; margin: $pad1 0 $pad2;}
+p:first-child {margin-top: 0;}
+p:last-child {margin-bottom: 0;}
+blockquote {border:none; border-left: 4px solid $primary; padding: $pad2; margin: 0; margin-bottom: $pad1; font-size:1.1rem; background: $dark-grey;}
+blockquote blockquote {background: $light-grey; font-size:0.92em;}
+cite { @extend .muted; }
+
+blockquote p:nth-last-child(1) {margin-bottom: 0;}
+ul {list-style: disc outside; padding-left: $pad3; margin-bottom: $pad2; margin-top: $pad1;}
+ol {list-style: decimal outside; padding-left: $pad3; margin-bottom: $pad2; margin-top: $pad1;}
+ol.nolist, ul.nolist {list-style:none;}
+
+i, .material-icons { font-family: 'Material Icons'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block; white-space: nowrap; word-wrap: normal; direction: ltr; -webkit-font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased; }

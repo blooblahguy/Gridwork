@@ -1,0 +1,9 @@
+{{define "quadrant"}}
+<div class="matrix-quadrant {{.Position}}-quadrant os-6">
+	<div class="matrix-header pad1 row content-between">
+		<h3 class="marg0 text-cap os">{{.Position}}</h3>
+		<span class="task-count os-min">{{len .Tasks}}</span>
+	</div>
+	<div class="pad2 border content">{{template "task-list" .}}</div>
+</div>
+{{end}}

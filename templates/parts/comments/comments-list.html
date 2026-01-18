@@ -1,0 +1,10 @@
+{{define "comments-list"}}
+<div class="comments-list">
+	{{range .Comments}}
+		{{template "comment-item" .}}
+	{{end}}
+	{{if not .Comments}}
+	<p class="no-comments">no comments yet</p>
+	{{end}}
+</div>
+{{end}}

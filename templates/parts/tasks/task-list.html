@@ -1,0 +1,8 @@
+{{define "task-list"}}
+<div
+	id="{{.Position}}-tasks"
+	class="task-list h100"
+	data-position="{{.Position}}">
+	{{range .Tasks}} {{template "task-card" .}} {{end}}
+</div>
+{{end}}
